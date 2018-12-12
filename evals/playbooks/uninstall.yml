@@ -53,12 +53,6 @@
         che_delete_namespace: true
       tags: ['che']
     - 
-      name: Uninstall managed services broker
-      include_role:
-        name: msbroker
-        tasks_from: uninstall
-      tags: ['msbroker']
-    - 
       name: Uninstall 3scale
       include_role:
         name: 3scale
@@ -100,6 +94,12 @@
         name: fuse
         tasks_from: uninstall
       tags: ['fuse']
+    - 
+      name: Uninstall managed services broker
+      include_role:
+        name: msbroker
+        tasks_from: uninstall
+      tags: ['msbroker']
 
 
 - hosts: master
