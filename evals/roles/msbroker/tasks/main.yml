@@ -16,14 +16,6 @@
   when: che and launcher
 
 
-- name: Get 3scale dashboard url
-  shell: oc get route/system-provider-admin-route -o jsonpath='{.spec.host}' -n {{ threescale_namespace }}
-  register: threescale_host_cmd
-  when: threescale
-- set_fact:
-    threescale_dashboard_url: "https://{{ threescale_host_cmd.stdout}}"
-  when: threescale
-
 - name: Get apicurio dashboard url
   shell: oc get route/apicurio-studio-ui -o jsonpath='{.spec.host}' -n {{ apicurio_namespace }}
   register: apicurio_host_cmd
@@ -66,7 +58,7 @@
   --param=ROUTE_SUFFIX={{ route_suffix }} \
   --param=LAUNCHER_DASHBOARD_URL={{ launcher_dashboard_url }} \
   --param=CHE_DASHBOARD_URL={{ che_dashboard_url }} \
-  --param=THREESCALE_DASHBOARD_URL={{ threescale_dashboard_url }} \
+  --param=THREESCALE_DASHBOARD_URL=empty \
   --param=APICURIO_DASHBOARD_URL={{ apicurio_dashboard_url }} \
   --param=IMAGE_ORG={{ msbroker_image_org }} \
   --param=IMAGE_TAG={{ msbroker_image_tag }} | oc create -n {{ msbroker_namespace }} -f -"

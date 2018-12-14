@@ -94,14 +94,6 @@
 
     - name: Expose vars
       include_vars: "../roles/3scale/defaults/main.yml"
-    -
-      name: Install 3Scale
-      include_role:
-        name: 3scale
-      vars:
-        threescale_route_suffix: "{{ eval_app_host }}"
-      tags: ['3scale']
-      when: threescale
 
     - name: Expose vars
       include_vars: "../roles/webapp/defaults/main.yml"
