@@ -41,6 +41,15 @@
   register: identities
   failed_when: false
 
+- name: Get RHSSO Users
+  shell: oc get user | grep 'rh_sso' | awk '{print $1}'
+  register: users
+  failed_when: false
+
 - name: "Delete user identities"
   shell:  "oc delete identities {{ identities.stdout | replace('\n', ' ') }}"
   when: identities.stdout != ''
+
+- name: "Delete rhsso users"
+  shell: "oc delete users {{ users.stdout | replace('\n', ' ') }}"
+  when: users.stdout != ''
