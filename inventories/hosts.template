@@ -2,7 +2,7 @@
 master
 
 [OSEv3:vars]
-ansible_user=ec2-user
+ansible_user=root
 
 [master]
 master.evals.example.com
