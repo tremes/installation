@@ -20,7 +20,7 @@ che_version: '1.2.0.GA'
 # by default the GA installer uses the :latest tag so we need to set the tagged version in the config
 che_server_image: 'registry.redhat.io/codeready-workspaces/server-rhel8:1.2'
 che_operator_image: 'registry.redhat.io/codeready-workspaces/server-operator-rhel8:1.2'
-che_installer: 'https://raw.githubusercontent.com/redhat-developer/codeready-workspaces-deprecated/{{che_version}}/operator-installer/deploy.sh'
+che_installer: 'https://raw.githubusercontent.com/tremes/codeready-workspaces-deprecated/CRW-321/operator-installer/deploy.sh'
 
 #controls whether enmasse is installed or not
 enmasse: true
