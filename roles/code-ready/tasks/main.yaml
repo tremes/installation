@@ -45,6 +45,9 @@
     shell: "cd /tmp/code-ready && OPENSHIFT_PROJECT={{ che_namespace }} ./installer.sh --deploy --cert=/tmp/code-ready/cert.ca --operator-image={{che_operator_image}} --server-image={{che_server_image}}"
     when: eval_self_signed_certs|bool
 
+  - name: debug
+    shell: "set -x"
+    
   - name: install code ready valid certs
     shell: "cd /tmp/code-ready && OPENSHIFT_PROJECT={{ che_namespace }} ./installer.sh --deploy --operator-image={{che_operator_image}} --server-image={{che_server_image}}"
     when: not eval_self_signed_certs|bool
