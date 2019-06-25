@@ -42,7 +42,7 @@
       dest: /tmp/code-ready/config.yaml
 
   - name: install code ready with self signed cert
-    shell: "cd /tmp/code-ready && OPENSHIFT_PROJECT={{ che_namespace }} ./installer.sh --deploy --cert=/tmp/code-ready/cert.ca --operator-image={{che_operator_image}} --server-image={{che_server_image}}"
+    shell: "cd /tmp/code-ready && ./installer.sh --deploy --public-certs --cert=/tmp/code-ready/cert.ca --operator-image={{che_operator_image}} --server-image={{che_server_image}} --project={{ che_namespace }}"
     when: eval_self_signed_certs|bool
 
   - name: debug
