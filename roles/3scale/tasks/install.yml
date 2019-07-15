@@ -15,6 +15,34 @@
   vars:
     namespace: "{{ threescale_namespace }}"
 
+- name: Import postgresql-10-rhel7 image
+  shell: "oc import-image postgresql-10-rhel7 --confirm='true' registry.redhat.io/rhscl/postgresql-10-rhel7 -n {{ threescale_namespace }}"
+  register: import_image_result
+  until: import_image_result.rc == 0
+  retries: 2
+  delay: 3
+
+- name: Import new memcached image
+  shell: "oc import-image memcached --confirm='true' registry.redhat.io/3scale-amp20/memcached -n {{ threescale_namespace }}"
+  register: import_image_result
+  until: import_image_result.rc == 0
+  retries: 2
+  delay: 3
+
+- name: Import new mysql-57-rhel7 image
+  shell: "oc import-image mysql-57-rhel7:5.7 --confirm='true' registry.redhat.io/rhscl/mysql-57-rhel7:5.7 -n {{ threescale_namespace }}"
+  register: import_image_result
+  until: import_image_result.rc == 0
+  retries: 2
+  delay: 3
+
+- name: Import new redis-32-rhel7 image
+  shell: "oc import-image redis-32-rhel7:3.2 --confirm='true' registry.redhat.io/rhscl/redis-32-rhel7:3.2 -n {{ threescale_namespace }}"
+  register: import_image_result
+  until: import_image_result.rc == 0
+  retries: 2
+  delay: 3
+
 - name: Check namespace for existing resources
   shell: oc get all -n {{ threescale_namespace }}
   register: threescale_resources_exist
