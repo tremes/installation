@@ -1,4 +1,5 @@
 ---
+
 - name: "Create 3scale namespace: {{ threescale_namespace }}"
   include_role:
     name: namespace
@@ -8,6 +9,11 @@
     display_name: "{{ threescale_display_name }}"
     monitor: true
     is_service: true
+
+- include_role:
+    name: imagestream_pull_secret
+  vars:
+    namespace: "{{ threescale_namespace }}"
 
 - name: Check namespace for existing resources
   shell: oc get all -n {{ threescale_namespace }}
