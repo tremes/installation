@@ -89,7 +89,7 @@
 
 # Create the image stream pull secret in the Fuse namespace
 - include_role:
-    name: fuse_pull_secret
+    name: imagestream_pull_secret
   vars:
     namespace: "{{ msbroker_namespace }}"
 
