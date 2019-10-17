@@ -5,10 +5,10 @@
   tasks:
   - name: Set Upgrade Facts
     set_fact: upgrade_{{ item }}=true
-    with_items: "{{ upgrade_products }}"
+    with_items: "{{ upgrade_product_roles }}"
 
   - name: Upgrade products
     include_role:
       name: "{{ item }}"
       tasks_from: "{{ upgrade_tasks_from }}"
-    with_items: "{{ upgrade_products }}"
+    with_items: "{{ upgrade_product_roles }}"
