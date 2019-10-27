@@ -118,7 +118,7 @@ git tag ${releaseTag}
 #reset upgrade playbook if this is the final release
 if [[ -z $LABEL_VERSION ]]; then
     echo "resetting upgrade variables after final release $releaseTag"
-    sed "s,UPGRADE_VERSION_FROM,$releaseTag,g" scripts/upgrade.template.yml | \
+    sed "s,UPGRADE_FROM_VERSION,$releaseTag,g" scripts/upgrade.template.yml | \
     sed "s,UPGRADE_TASKS_FROM,$upgradeTasksFrom,g" > playbooks/group_vars/all/upgrade.yml
     git commit -am "Reset upgrade variables after final release ${releaseTag}"
 fi
