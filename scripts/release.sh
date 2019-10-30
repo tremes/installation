@@ -60,11 +60,8 @@ else
     exit 1
 fi
 
-upgradeTasksFrom="upgrade"
-
 if [[ $PATCH_VERSION -gt 0 ]]; then
     RELEASE_TYPE="patch"
-    upgradeTasksFrom="upgrade_patch"
 else
     if [[ $MINOR_VERSION -gt 0 ]]; then
         RELEASE_TYPE="minor"
@@ -115,11 +112,11 @@ sed -i.bak -E "s/^integreatly_version: .*$/integreatly_version: ${releaseTag}/g"
 git commit -am "release manifest version  update for ${releaseTag}"
 git tag ${releaseTag}
 
-#reset upgrade playbook if this is the final release
+#reset upgrade playbook and variables if this is the final release
 if [[ -z $LABEL_VERSION ]]; then
-    echo "resetting upgrade variables after final release $releaseTag"
-    sed "s,UPGRADE_FROM_VERSION,$releaseTag,g" scripts/upgrade.template.yml | \
-    sed "s,UPGRADE_TASKS_FROM,$upgradeTasksFrom,g" > playbooks/group_vars/all/upgrade.yml
+    echo "resetting upgrade playbook and variables after final release $releaseTag"
+    cp scripts/upgrade.template.yml playbooks/upgrade.yml
+    sed "s,UPGRADE_FROM_VERSION,$releaseTag,g" scripts/upgrade_vars.template.yml > playbooks/group_vars/all/upgrade.yml
     git commit -am "Reset upgrade variables after final release ${releaseTag}"
 fi
 

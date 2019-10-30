@@ -1,3 +1,5 @@
+# This file is re-generated after each release!
+# If you need to add tasks that should run on every release, update the template here ../../scripts/upgrade.template.yml
 ---
 - hosts: master
   gather_facts: no
@@ -18,112 +20,25 @@
         tasks_from: upgrade
       vars:
         from_versions:
-          - "release-1.5.0"
-    - set_fact:
-        upgrade_webapp_image: quay.io/integreatly/tutorial-web-app:{{ webapp_version }}
-        upgrade_webapp_operator_image: quay.io/integreatly/tutorial-web-app-operator:{{ webapp_operator_release_tag }}
-        upgrade_fuse_image_tag: 1.7
+          - "{{ upgrade_from_version }}"
 
-    # Managed Service Broker
-    - name: Expose vars
-      include_vars: "../../roles/rhsso/defaults/main.yml"
-    -
-      name: Set eval_app_host var
-      set_fact:
-        eval_app_host: "{{ hostvars['EVAL_VARS']['eval_app_host'] }}"
-    - include_role:
-        name: msbroker
-        tasks_from: upgrade
-      vars:
-        route_suffix: "{{ eval_app_host }}"
-        sso_realm: "{{ rhsso_realm }}"
+    - name: Set Upgrade Facts
+      set_fact: upgrade_{{ item }}=true
+      with_items: "{{ upgrade_product_roles }}"
 
-    # Solution Explorer
-    - name: Webapp upgrade
+    - name: Upgrade product images
       include_role:
-        name: webapp
-        tasks_from: upgrade
-      vars:
-        rhsso_openshift_master_config_path: "{{ eval_openshift_master_config_path }}"
-        rhsso_namespace: "{{ eval_rhsso_namespace }}"
-        openshift_master_url: "{{ hostvars['EVAL_VARS']['openshift_master_url'] | replace('https://', '') }}"
-        openshift_asset_url: "{{ hostvars['EVAL_VARS']['openshift_asset_url'] | replace('https://', '') }}"
+        name: "{{ item }}"
+        tasks_from: "upgrade_images"
+      with_items: "{{ upgrade_product_roles }}"
 
-    - name: SSO upgrade
-      include_role:
-        name: rhsso
-        tasks_from: upgrade
-
-    - name: AMQ Online upgrade
-      include_role:
-        name: enmasse
-
-    - name: Update image streams
-      include_role:
-        name: images
-        tasks_from: import
-      with_items:
-        - 3scale
-        - apicurito
-        - codeready
-        - enmasse
-        - fuse
-        - launcher
-        - sso
-        - webapp
-      loop_control:
-        loop_var: images_source_namespace
-
-    # Launcher
-    - name: Launcher upgrade
-      include_role:
-        name: launcher
-        tasks_from: upgrade
-      when: launcher
-
-    # Monitoring upgrade
-    - name: Expose vars
-      include_vars: "../../roles/middleware_monitoring_config/defaults/main.yml"
-
-    # Grafana
-    - include_role:
-        name: middleware_monitoring
-        tasks_from: upgrade/grafana
-
-    # Prometheus & Alertmanager
-    - include_role:
-        name: middleware_monitoring
-        tasks_from: upgrade/prometheus
-
-    # Pull the trigger on the monitoring upgrade
-    - include_role:
-        name: middleware_monitoring
-        tasks_from: upgrade/trigger
-    # End monitoring upgrade
-
-    - name: Recreate any CRs for alerts to ensure we have the latest
-      include_role:
-        name: middleware_monitoring_config
-        tasks_from: upgrade.yml
-
-    # Backup alerts upgrade
-    - include_role:
-        name: backup
-        tasks_from: upgrade
-
-    # Fuse
-    - include_role:
-        name: fuse
-        tasks_from: upgrade
-      vars:
-        old_fuse_tag: "application-templates-2.1.fuse-730065-redhat-00002"
-        fuse_image_tag: "{{ upgrade_fuse_image_tag }}"
-
-    - include_role:
-        name: fuse_managed
-        tasks_from: upgrade
-      vars:
-        fuse_image_tag: "{{ upgrade_fuse_image_tag }}"
+# Add product specific upgrade tasks here, make sure to use the "when: upgrade_<product>|bool" condition on any new tasks added!!
+#
+#    - name: Some Special webapp only upgrade thing
+#      include_role:
+#        name: webapp
+#        tasks_from: upgrade_patch
+#      when: upgrade_webapp|bool
 
 #Update product version (should always be last)
 - import_playbook: "../generate-customisation-inventory.yml"
