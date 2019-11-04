@@ -1,3 +1,0 @@
-
-- name: "Include upgrade images task"
-  include: upgrade_images.yml
