@@ -38,4 +38,6 @@ enmasse_resources:
     kind: deploy
     resources:
       requests:
-        memory: 200M
+        memory: 200Mi
+
+enmasse_heimdall_exclude_pattern: ""
