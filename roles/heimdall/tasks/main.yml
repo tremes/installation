@@ -6,6 +6,17 @@
     name: "{{ heimdall_namespace }}"
     display_name: "Heimdall"
 
+- block:
+
+  - template:
+      src: heimdall-dockercfg.yml.j2
+      dest: /tmp/heimdall-dockercfg.yml
+
+  - name: Create ImageStream Pull Secret
+    shell: oc apply -f /tmp/heimdall-dockercfg.yml -n {{ heimdall_namespace }}
+
+  when: heimdall_pull_secret_name is defined and heimdall_pull_secret_token is defined
+
 - name: Create Heimdall Operator Resources
   shell: "oc create -f {{ item }} -n {{ heimdall_namespace }}"
   with_items: "{{ heimdall_operator_resource_items }}"
