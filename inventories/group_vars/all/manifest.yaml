@@ -133,8 +133,8 @@ backup_image: quay.io/integreatly/backup-container:{{ backup_version }}
 backup_schedule: '30 2 * * *'
 backup_namespace: "openshift-integreatly-backups"
 
-#Heamidall
-heimdall: True
+#Heimdall
+heimdall: False
 heimdall_operator_release_tag: 'master'
 heimdall_operator_resources: 'https://raw.githubusercontent.com/integr8ly/heimdall/{{heimdall_operator_release_tag}}/deploy'
 
