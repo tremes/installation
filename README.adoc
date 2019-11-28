@@ -222,7 +222,7 @@ The following flag can be used if self signed certs are used.
 ----
 
 ====
-To enable Heimdall you will need a valid pull secret token to access the registry, you can retrieve these from https://access.redhat.com/terms-based-registry/#/token/-heimdall/info
+To enable Heimdall you will need a valid pull secret token to access the registry, you can retrieve these from https://access.redhat.com/terms-based-registry/#/token/-heimdall/openshift-secret
 
 [source,shell]
 ----

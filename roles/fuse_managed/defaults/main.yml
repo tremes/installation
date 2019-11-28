@@ -45,4 +45,4 @@ fuse_image_streams:
     tag: "1.7"
     namespace: "{{ fuse_namespace }}"
 
-fuse_heimdall_exclude_pattern: ""
+fuse_heimdall_exclude_pattern: "todo"
